@@ -1,0 +1,1 @@
+kubectl create configmap scm-auth-config --from-file=application.properties

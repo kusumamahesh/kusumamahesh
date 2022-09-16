@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: authserver
+  name: authserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: authserver
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: authserver
+    spec:
+      volumes:
+        - name: application-config
+          configMap:
+            name: scm-auth-config
+            items:
+              - key: application.properties
+                path: application.properties
+
+      containers:
+        - name: authserver
+          image: dockerhub.tryexa.com/scmxpert/authserversecuritydocker #--------------cors
+          #image: dockerhub.tryexa.com/scmxpert/authseversecuritydocker	#------------normal
+
+          #image: bindu5483/authseversecuritydocker
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8087
+          env:
+            - name: mongoAtlasdb
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-db-url
+                  key: mongourl
+
+            - name: CORS_IP
+              valueFrom:
+                secretKeyRef:
+                  name: cors-details
+                  key: cors-ip
+            - name: CORS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cors-details
+                  key: cors-port
+      imagePullSecrets:
+        - name: regcred

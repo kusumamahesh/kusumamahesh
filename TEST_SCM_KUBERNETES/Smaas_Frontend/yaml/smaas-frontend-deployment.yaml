@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: smaas-frontend
+  name: smaas-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: smaas-frontend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: smaas-frontend
+    spec:
+      containers:
+        - name: smaas-frontend
+          image: dockerhub.tryexa.com/scmxpert/frontenddockerscm
+          #image: dockerhub.tryexa.com/scmxpert/smaasforntenddocker2
+          imagePullPolicy: ""
+          ports:
+            - containerPort: 8081
+            - containerPort: 8443
+          env:
+            - name: AuthUrl
+              valueFrom:
+                secretKeyRef:
+                  name: smaasfrontend
+                  key: AuthUrl
+            - name: URL
+              valueFrom:
+                secretKeyRef:
+                  name: smaasfrontend
+                  key: URL
+            - name: MailUrl
+              valueFrom:
+                secretKeyRef:
+                  name: smaasmailsender
+                  key: MailUrl
+      imagePullSecrets:
+        - name: regcred

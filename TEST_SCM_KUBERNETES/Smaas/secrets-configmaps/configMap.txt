@@ -1,0 +1,2 @@
+kubectl create configmap scm-smaas-config --from-file=application.properties
+

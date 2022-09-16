@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: smaas
+  name: smaas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: smaas
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: smaas
+    spec:
+      volumes:
+        - name: application-config
+          configMap:
+            name: scm-smaas-config
+            items:
+              - key: application.properties
+                path: application.properties
+
+      containers:
+        - name: smaas
+          #image: bindu5483/smaasdocker
+          #image: dockerhub.tryexa.com/scmxpert/smaasbackenddocker:v1 #--------------cors
+          image: dockerhub.tryexa.com/scmxpert/smaastestdocker #------------------normal
+          imagePullPolicy: ""
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGOATLAS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-url
+                  key: mongodb-uri
+            - name: MONGO_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-database
+                  key: mongo-db
+            - name: CORS_IP
+              valueFrom:
+                secretKeyRef:
+                  name: cors-details
+                  key: cors-ip
+            - name: CORS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cors-details
+                  key: cors-port
+            - name: SECURITY_URI
+              valueFrom:
+                secretKeyRef:
+                  name: securityuri
+                  key: security-uri
+
+      imagePullSecrets:
+        - name: regcred

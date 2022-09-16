@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: data-parser
+  name: data-parser2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: data-parser
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: data-parser
+    spec:
+      containers:
+        - name: data-parser
+          image: dockerhub.tryexa.com/scmxpert/producerdocker2
+
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: bootstrapserver
+              valueFrom:
+                secretKeyRef:
+                  name: bootstrapip
+                  key: bootstrapserver
+            - name: externalIP2
+              valueFrom:
+                secretKeyRef:
+                  name: exip
+                  key: externalIP2
+            - name: username
+              valueFrom:
+                secretKeyRef:
+                  name: sslcred
+                  key: username
+            - name: password
+              valueFrom:
+                secretKeyRef:
+                  name: sslcred
+                  key: password
+           
+      imagePullSecrets:
+        - name: regcred               
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                 

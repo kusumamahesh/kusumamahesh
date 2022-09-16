@@ -1,0 +1,25 @@
+{
+"report_Status" : "<01><00>(.*?)<00>",
+
+"response_on_Message":"<02><00>(.*?)<00>",
+
+"temp_Measurment":"<03><00>(.*?)<00>" ,
+
+"modem_Registration_status":"<F3><00>(.*?)<00>",
+"bAT":"<00><F6><00>(.*?)<00>",
+"modem_IMEI":"<F5><00>(.*?)<00>",
+"extended_power_report":"<F6><00>(.*?)<00>",
+
+"gPS_Total_Distance":"<08><00>(.*?)<00>",
+"current_terminal_date":"<05><00>(.*?)<00>",
+"current_terminal_time":"<04><00>(.*?)<00>",
+ 
+"application_type":"<10>(.*?)<06><00>",
+"unit_serial_number":"<F7><00>(.*?)<00>",
+ "first_Sensor_ID":"<0B><00>(.*?)<00>",
+"internal_temperature":"<FA><00>(.*?)<00>",
+"First_Sensor_temperature":"<00><0C><00>(.*?)<00>",
+"first_Sensor_ID":"<11><00>(.*?)<00>",
+"gPS_data2":"<1F><00><FF><00><1C>(.*?)@<00>",
+"data_type":"NORMAL DATA (.*?)<00>"
+}
